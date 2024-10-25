@@ -1,11 +1,12 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import router from './routes/data.routes.js';
+import router from './routes/user.routes.js';
+import 'dotenv/config'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 

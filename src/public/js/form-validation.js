@@ -5,41 +5,55 @@ const emailField = document.querySelector("#email");
 
 personalDataForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  //Field validations
-  let err = [];
+
+  clearErrors();
+
+  // Field validations
+  let hasError = false;
   if (!isValidName(nameField.value.trim())) {
-    err.push("Ingrese un nombre valido");
+    showError(nameField, "Ingrese un nombre valido");
+    hasError = true;
   }
   if (!isValidAge(ageField.value)) {
-    err.push("Edad invalida o menor a la minima");
+    showError(ageField, "Edad invalida o menor a la minima");
+    hasError = true;
   }
   if (!isValidEmail(emailField.value.trim())) {
-    err.push("Ingrese una direccion de correo valida");
+    showError(emailField, "Ingrese una direccion de correo valida");
+    hasError = true;
   }
-  //submit if there are no errors
-  if (err.length > 0) {
-    let errString = "";
-    for (const error of err) {
-      errString += error + "\n";
-    }
-    alert(errString);
-  } else {
+
+  // Submit if there are no errors
+  if (!hasError) {
     personalDataForm.submit();
   }
 });
 
+const clearErrors = () => {
+  document.querySelectorAll(".text-red-500").forEach((errorElement) => {
+    errorElement.classList.add("hidden");
+    errorElement.textContent = "";
+  });
+
+  // Remove red border from all fields
+  nameField.classList.remove("border-red-500");
+  ageField.classList.remove("border-red-500");
+  emailField.classList.remove("border-red-500");
+};
+
+const showError = (field, message) => {
+  const errorElement = document.querySelector(`#${field.id}-error`);
+  errorElement.textContent = message;
+  errorElement.classList.remove("hidden");
+  field.classList.add("border-red-500");
+};
+
 const isValidName = (name) => {
-  if (name.length < 2) {
-    return false;
-  }
-  return true;
+  return name.length >= 2;
 };
 
 const isValidAge = (age) => {
-  if (age < 13 || age > 100) {
-    return false;
-  }
-  return true;
+  return age >= 13 && age <= 100;
 };
 
 const isValidEmail = (email) => {
